@@ -1,4 +1,3 @@
-
 import {
   Controller,
   Get,
@@ -36,18 +35,18 @@ export class PacientesController {
     return paciente;
   }
 
-@Post()
-create(@Body() dto: CreatePacienteDto) {
-  return this.pacientesService.create(dto);
-}
+  @Post()
+  create(@Body() dto: CreatePacienteDto) {
+    return this.pacientesService.create(dto);
+  }
 
-@Put(":id")
-update(
-  @Param("id") id: string,
-  @Body() dto: UpdatePacienteDto,
-) {
-  return this.pacientesService.update(Number(id), dto);
-}
+  @Put(":id")
+  update(
+    @Param("id") id: string,
+    @Body() dto: UpdatePacienteDto,
+  ) {
+    return this.pacientesService.update(Number(id), dto);
+  }
 
   @Delete(":id")
   remove(@Param("id") id: string) {
