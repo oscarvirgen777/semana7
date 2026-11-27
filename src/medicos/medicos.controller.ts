@@ -13,8 +13,14 @@ import {
 import { CreateMedicoDto } from "./dto/create-medico.dto";
 import { UpdateMedicoDto } from "./dto/update-medico.dto";
 import { MedicosService } from "./medicos.service";
-
+import { UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { RolesGuard } from '../auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/roles.decorator'
+import { Role } from '../generated/prisma/client'
 @Controller("medicos")
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.RECEPCIONISTA)
 export class MedicosController {
   constructor(
     private readonly medicosService: MedicosService,
