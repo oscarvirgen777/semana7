@@ -10,9 +10,17 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 
+import { CreateMedicoDto } from "./dto/create-medico.dto";
+import { UpdateMedicoDto } from "./dto/update-medico.dto";
 import { MedicosService } from "./medicos.service";
-
+import { UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { RolesGuard } from '../auth/guards/roles.guard'
+import { Roles } from '../auth/decorators/roles.decorator'
+import { Role } from '../generated/prisma/client'
 @Controller("medicos")
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.RECEPCIONISTA)
 export class MedicosController {
   constructor(
     private readonly medicosService: MedicosService,
@@ -34,18 +42,18 @@ export class MedicosController {
     return medico;
   }
 
-  @Post()
-  create(@Body() body: any) {
-    return this.medicosService.create(body);
-  }
+@Post()
+create(@Body() dto: CreateMedicoDto) {
+  return this.medicosService.create(dto);
+}
 
-  @Put(":id")
-  update(
-    @Param("id") id: string,
-    @Body() body: any,
-  ) {
-    return this.medicosService.update(Number(id), body);
-  }
+@Put(":id")
+update(
+  @Param("id") id: string,
+  @Body() dto: UpdateMedicoDto,
+) {
+  return this.medicosService.update(Number(id), dto);
+}
 
   @Delete(":id")
   remove(@Param("id") id: string) {
